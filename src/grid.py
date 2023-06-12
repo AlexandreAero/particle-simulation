@@ -36,17 +36,11 @@ class grid:
         '''
         for y in range(self.height - 1, 0, -1):
             for x in range(0, self.width, 1):
-                material_name = self.get_particle_at(x, y).material_name
-                if material_name == MATERIAL_NONE: 
-                    pass
-                elif material_name == MATERIAL_SAND: 
-                    self.update_sand(x, y)
-                elif material_name == MATERIAL_WATER: 
-                    self.update_water(x, y)
-                elif material_name == MATERIAL_LAVA:  
-                    self.update_lava(x, y)
-                else:                                 
-                    pass
+                mat_type = self.get_particle_at(x, y).material_type
+                if mat_type == MATERIAL_TYPE_SOLID:
+                    self.update_solid(x, y)
+                elif mat_type == MATERIAL_TYPE_LIQUID:
+                    self.update_liquid(x, y)
 
         for column_index in range(self.height):
             for row_index in range(self.width):
@@ -73,77 +67,58 @@ class grid:
         ''' particle, particle -> None
         p1 becomes p2 and p2 becomes p1.
         '''
-        p1.material_name, p1.color, p2.material_name, p2.color = p2.material_name, p2.color, p1.material_name, p1.color
+        p1.material_name, p1.material_type, p1.color, p2.material_name, p2.color = p2.material_name, p2.material_type, p2.color, p1.material_name, p1.color
 
-    def update_sand(self, x, y):
+    def update_solid(self, x, y):
         ''' int, int -> None
-        Updates the sand particle located at x and y on the grid.
+        Updates the solid particle located at x and y on the grid.
+        A solid particle isn't simulated in the same way as a liquid particle.
+        The 'physics' is different, a solid particle can stack up while a
+        liquid particle will spread around.
         '''
-        sand_particle = self.get_particle_at(x, y)
+        solid_particle = self.get_particle_at(x, y)
 
-        # Get neighbouring particles
-        b_particle = self.get_particle_at(x, y + 1)       # Below
+        # Get neighboring particles
+        b_particle = self.get_particle_at(x, y + 1) # Below
         b_l_particle = self.get_particle_at(x - 1, y + 1) # Below left
         b_r_particle = self.get_particle_at(x + 1, y + 1) # Below right
 
-        if b_particle and self.particle_is_empty(b_particle):    
-            self.swap_particles(b_particle, sand_particle)
-        elif b_l_particle and self.particle_is_empty(b_l_particle):
-            self.swap_particles(b_l_particle, sand_particle)
-        elif b_r_particle and self.particle_is_empty(b_r_particle):
-            self.swap_particles(b_r_particle, sand_particle)
+        if b_particle and (self.particle_is_empty(b_particle) or b_particle.material_name == MATERIAL_WATER): # Move down
+            self.swap_particles(b_particle, solid_particle)
+        elif b_l_particle and self.particle_is_empty(b_l_particle): # Move down and left
+            self.swap_particles(b_l_particle, solid_particle)
+        elif b_r_particle and self.particle_is_empty(b_r_particle): # Move down and right
+            self.swap_particles(b_r_particle, solid_particle)
         else:
             pass
 
-    def update_water(self, x, y):
+    def update_liquid(self, x, y):
         ''' int, int -> None
-        Updates the water particle located at x and y on the grid.
+        Updates the liquid particle located at x and y on the grid.
+        A liquid particle isn't simulated in the same way as a solid particle.
+        The 'physics' is different, a liquid particle can spread around while
+        a solid particle will stack up.
         '''
-        water_particle = self.get_particle_at(x, y)
+        liquid_particle = self.get_particle_at(x, y)
 
-        l_particle = self.get_particle_at(x - 1, y)
-        r_particle = self.get_particle_at(x + 1, y)
+        # Get neighbouring particles
+        l_particle = self.get_particle_at(x - 1, y) # Left
+        r_particle = self.get_particle_at(x + 1, y) # Right
 
-        b_particle = self.get_particle_at(x, y + 1)
-        b_l_particle = self.get_particle_at(x - 1, y + 1)
-        b_r_particle = self.get_particle_at(x + 1, y + 1)
+        b_particle = self.get_particle_at(x, y + 1) # Below
+        b_l_particle = self.get_particle_at(x - 1, y + 1) # Below left
+        b_r_particle = self.get_particle_at(x + 1, y + 1) # Below right
 
-        if b_particle and self.particle_is_empty(b_particle):
-            self.swap_particles(b_particle, water_particle)
-        elif b_l_particle and self.particle_is_empty(b_l_particle):
-            self.swap_particles(b_l_particle, water_particle)
-        elif b_r_particle and self.particle_is_empty(b_r_particle):
-            self.swap_particles(b_r_particle, water_particle)
-        elif l_particle and self.particle_is_empty(l_particle):
-            self.swap_particles(l_particle, water_particle)
-        elif r_particle and self.particle_is_empty(r_particle):
-            self.swap_particles(r_particle, water_particle)
-        else:
-            pass
-    
-    def update_lava(self, x, y):
-        ''' int, int -> None
-        Updates the lava particle located at x and y on the grid.
-        '''
-        lava_particle = self.get_particle_at(x, y)
-
-        l_particle = self.get_particle_at(x - 1, y)
-        r_particle = self.get_particle_at(x + 1, y)
-
-        b_particle = self.get_particle_at(x, y + 1)
-        b_l_particle = self.get_particle_at(x - 1, y + 1)
-        b_r_particle = self.get_particle_at(x + 1, y + 1)
-
-        if b_particle and self.particle_is_empty(b_particle):
-            self.swap_particles(b_particle, lava_particle)
-        elif b_l_particle and self.particle_is_empty(b_l_particle):
-            self.swap_particles(b_l_particle, lava_particle)
-        elif b_r_particle and self.particle_is_empty(b_r_particle):
-            self.swap_particles(b_r_particle, lava_particle)
-        elif l_particle and self.particle_is_empty(l_particle):
-            self.swap_particles(l_particle, lava_particle)
-        elif r_particle and self.particle_is_empty(r_particle):
-            self.swap_particles(r_particle, lava_particle)
+        if b_particle and self.particle_is_empty(b_particle): # Move down
+            self.swap_particles(b_particle, liquid_particle)
+        elif b_l_particle and self.particle_is_empty(b_l_particle): # Move down and left
+            self.swap_particles(b_l_particle, liquid_particle)
+        elif b_r_particle and self.particle_is_empty(b_r_particle): # Move down and right
+            self.swap_particles(b_r_particle, liquid_particle)
+        elif l_particle and self.particle_is_empty(l_particle): # Move left
+            self.swap_particles(l_particle, liquid_particle)
+        elif r_particle and self.particle_is_empty(r_particle): # Move right
+            self.swap_particles(r_particle, liquid_particle)
         else:
             pass
 

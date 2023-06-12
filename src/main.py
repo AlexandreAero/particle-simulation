@@ -2,8 +2,6 @@ import pygame
 from grid import *
 from constants import *
 
-# ----------+----------+----------+----------+----------+----------+----------+
-
 pygame.init()
 pygame.display.set_caption('Particle Simulation')
 
@@ -16,8 +14,6 @@ mouse_down = False
 spawn_mat_name = MATERIAL_NONE
 
 simulation_grid = grid(window, CELL_SIZE)
-
-# ----------+----------+----------+----------+----------+----------+----------+
 
 def update_inputs():
     ''' None -> None
