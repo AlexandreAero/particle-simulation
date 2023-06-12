@@ -17,7 +17,7 @@ mouse_down = False
 
 delta_time = 0
 
-spawn_mat = 'none'
+spawn_mat = MATERIAL_NONE
 
 simulation_grid = grid(window, CELL_SIZE)
 
@@ -72,11 +72,14 @@ def run():
     Updates the game loop.
     '''
     while not shouldQuit:
-        update_inputs()
         window.fill(CLEAR_COLOR)
+        
+        update_inputs()
         update_spawn()
+        
         simulation_grid.update_particle_simulation()
         pygame.display.update()
+        
         delta_time = clock.tick(FPS) / 1000
 
 if __name__ == '__main__':
