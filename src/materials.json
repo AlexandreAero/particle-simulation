@@ -1,7 +1,7 @@
 [
   {
     "name": "none",
-    "type": "",
+    "type": "none",
     "initial_life_time": 0.0,
     "initial_color": "(0, 0, 0)",
     "spread_rules": {

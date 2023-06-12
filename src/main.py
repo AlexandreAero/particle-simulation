@@ -13,8 +13,6 @@ window = pygame.display.set_mode(SCREEN_SIZE)
 shouldQuit = False
 mouse_down = False
 
-delta_time = 0
-
 spawn_mat_name = MATERIAL_NONE
 
 simulation_grid = grid(window, CELL_SIZE)
@@ -68,7 +66,7 @@ def run():
         
         pygame.display.update()
         
-        delta_time = clock.tick(FPS) / 1000
+        clock.tick(FPS) / 1000
 
 if __name__ == '__main__':
     run()

@@ -22,10 +22,7 @@ class grid:
         ''' None -> None 
         Populates the cells in the grid with new empty particles.
         '''
-        for _ in range(self.width * self.height):
-            # Create new empty particle
-            new_particle = particle(MATERIAL_NONE)
-            self.cells.append(new_particle)
+        self.cells = [particle(MATERIAL_NONE) for _ in range(self.width * self.height)]
 
     def get_cell_index(self, x, y):
         ''' int, int -> int
@@ -40,11 +37,16 @@ class grid:
         for y in range(self.height - 1, 0, -1):
             for x in range(0, self.width, 1):
                 material_name = self.get_particle_at(x, y).material_name
-                if material_name == MATERIAL_NONE:    pass
-                elif material_name == MATERIAL_SAND:  self.update_sand(x, y)
-                elif material_name == MATERIAL_WATER: self.update_water(x, y)
-                elif material_name == MATERIAL_LAVA:  self.update_lava(x, y)
-                else:                                 pass
+                if material_name == MATERIAL_NONE: 
+                    pass
+                elif material_name == MATERIAL_SAND: 
+                    self.update_sand(x, y)
+                elif material_name == MATERIAL_WATER: 
+                    self.update_water(x, y)
+                elif material_name == MATERIAL_LAVA:  
+                    self.update_lava(x, y)
+                else:                                 
+                    pass
 
         for column_index in range(self.height):
             for row_index in range(self.width):
@@ -79,11 +81,12 @@ class grid:
         '''
         sand_particle = self.get_particle_at(x, y)
 
-        b_particle = self.get_particle_at(x, y + 1)
-        b_l_particle = self.get_particle_at(x - 1, y + 1)
-        b_r_particle = self.get_particle_at(x + 1, y + 1)
+        # Get neighbouring particles
+        b_particle = self.get_particle_at(x, y + 1)       # Below
+        b_l_particle = self.get_particle_at(x - 1, y + 1) # Below left
+        b_r_particle = self.get_particle_at(x + 1, y + 1) # Below right
 
-        if b_particle and (self.particle_is_empty(b_particle) or b_particle.material_name == MATERIAL_WATER):
+        if b_particle and (self.particle_is_empty(b_particle) or b_particle.material_name in sand_particle.spread_rules['can_replace']):    
             self.swap_particles(b_particle, sand_particle)
         elif b_l_particle and self.particle_is_empty(b_l_particle):
             self.swap_particles(b_l_particle, sand_particle)
@@ -131,7 +134,7 @@ class grid:
         b_l_particle = self.get_particle_at(x - 1, y + 1)
         b_r_particle = self.get_particle_at(x + 1, y + 1)
 
-        if b_particle and (self.particle_is_empty(b_particle) or b_particle.material_name == MATERIAL_WATER or b_particle.material_name == MATERIAL_SAND):
+        if b_particle and (self.particle_is_empty(b_particle) or b_particle.material_name in lava_particle.spread_rules):
             self.swap_particles(b_particle, lava_particle)
         elif b_l_particle and self.particle_is_empty(b_l_particle):
             self.swap_particles(b_l_particle, lava_particle)
@@ -149,7 +152,7 @@ class grid:
         Returns the particle located at x and y in the grid.
         '''
         index = self.get_cell_index(x, y)
-        if index < len(self.cells) and index >= 0:
+        if index >= 0 and index < len(self.cells):
             return self.cells[index]
         return None
         
