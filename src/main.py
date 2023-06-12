@@ -1,8 +1,6 @@
-import json
 import pygame
 from grid import *
 from constants import *
-from ast import literal_eval as make_tuple
 
 # ----------+----------+----------+----------+----------+----------+----------+
 
@@ -17,37 +15,28 @@ mouse_down = False
 
 delta_time = 0
 
-spawn_mat = MATERIAL_NONE
+spawn_mat_name = MATERIAL_NONE
 
 simulation_grid = grid(window, CELL_SIZE)
 
 # ----------+----------+----------+----------+----------+----------+----------+
-
-def get_material_data(file_path, mat_name):
-    ''' str, str -> {}
-    Returns the json data located at file_path for the 
-    material named key.
-    '''
-    with open(file_path) as json_file:
-        data = json.load(json_file)
-        return data[mat_name]
 
 def update_inputs():
     ''' None -> None
     Updates the user inputs.
     '''
     global mouse_down
-    global spawn_mat
+    global spawn_mat_name
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_down = True
             if event.button == pygame.BUTTON_LEFT:
-                spawn_mat = MATERIAL_SAND
+                spawn_mat_name = MATERIAL_SAND
             elif event.button == pygame.BUTTON_MIDDLE:
-                spawn_mat = MATERIAL_LAVA
+                spawn_mat_name = MATERIAL_LAVA
             elif event.button == pygame.BUTTON_RIGHT:
-                spawn_mat = MATERIAL_WATER
+                spawn_mat_name = MATERIAL_WATER
         elif event.type == pygame.MOUSEBUTTONUP:
             mouse_down = False
 
@@ -56,16 +45,14 @@ def update_spawn():
     Checks if a new spawn is requested.
     '''
     global mouse_down
-    global spawn_mat
+    global spawn_mat_name
     
     if mouse_down:
         mouse_pos = pygame.mouse.get_pos()
         cell_x = mouse_pos[0] // CELL_SIZE
         cell_y = mouse_pos[1] // CELL_SIZE
 
-        mat_data = get_material_data(MATERIAL_FILE, spawn_mat)
-
-        simulation_grid.start_particle(cell_x, cell_y, spawn_mat, make_tuple(mat_data['color']))
+        simulation_grid.reveal_particle_at(cell_x, cell_y, spawn_mat_name)
 
 def run():
     ''' None -> None
@@ -78,6 +65,7 @@ def run():
         update_spawn()
         
         simulation_grid.update_particle_simulation()
+        
         pygame.display.update()
         
         delta_time = clock.tick(FPS) / 1000

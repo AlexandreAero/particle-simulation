@@ -1,0 +1,45 @@
+[
+  {
+    "name": "none",
+    "type": "",
+    "initial_life_time": 0.0,
+    "initial_color": "(0, 0, 0)",
+    "spread_rules": {
+      "can_replace": [],
+      "contact_colors": {}
+    }
+  },
+  {
+    "name": "sand",
+    "type": "solid",
+    "initial_life_time": -1,
+    "initial_color": "(255, 255, 0)",
+    "spread_rules": {
+      "can_replace": ["water", "none"],
+      "contact_colors": {}
+    }
+  },
+  {
+    "name": "water",
+    "type": "liquid",
+    "initial_life_time": -1,
+    "initial_color": "(0, 0, 255)",
+    "spread_rules": {
+      "can_replace": ["none"],
+      "contact_colors": {}
+    }
+  },
+  {
+    "name": "lava",
+    "type": "liquid",
+    "initial_life_time": -1,
+    "initial_color": "(255, 0, 0)",
+    "spread_rules": {
+      "can_replace": ["sand", "water", "none"],
+      "contact_colors": {
+        "water": "(60, 51, 51)",
+        "sand": "(40, 40, 10)"
+      }
+    }
+  }
+]
