@@ -1,0 +1,18 @@
+{
+  "none": {
+    "life_time": 0.0,
+    "color": "(0, 0, 0)"
+  },
+  "sand": {
+    "life_time": 0.0,
+    "color": "(255, 255, 0)"
+  },
+  "water": {
+    "life_time": 0.0,
+    "color": "(0, 0, 255)"
+  },
+  "lava": {
+    "life_time": 0.0,
+    "color": "(255, 0, 0)"
+  }
+}

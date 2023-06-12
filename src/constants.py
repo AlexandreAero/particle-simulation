@@ -1,0 +1,9 @@
+FPS            = 60
+CELL_SIZE      = 6
+SCREEN_SIZE    = (800, 800)
+CLEAR_COLOR    = (0, 0, 0)
+MATERIAL_FILE  = './material.json'
+MATERIAL_NONE  = 'none'
+MATERIAL_SAND  = "sand"
+MATERIAL_WATER = 'water'
+MATERIAL_LAVA  = 'lava'
