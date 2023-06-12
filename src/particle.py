@@ -21,6 +21,15 @@ def get_material(src_path, mat_name):
     The particle class is a class that group the data related the
     the particles used during the simulation.
     The data is loaded based on the material_name in the constructor.
+    The spread rules define how the material/particle should behave when
+    in contact with other particles. The spread rules are made of two 
+    elements:
+    - "can_replace": tells if the particule can replace the elements in the
+    array or stack above the particles. For instance water cannot replace 
+    the sand. But sand can replace water.
+    - "contact_colors": tells how the particle should be colored when in
+    contact with another particle. For instance if lava meets sand it will
+    turn darker.
 '''
 class particle:
     def __init__(self, material_name):
