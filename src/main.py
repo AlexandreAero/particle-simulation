@@ -50,6 +50,10 @@ def update_spawn():
         cell_x = mouse_pos[0] // CELL_SIZE
         cell_y = mouse_pos[1] // CELL_SIZE
 
+        # Clamp the coordinates within the valid range
+        cell_x = max(0, min(cell_x, simulation_grid.width - 1))
+        cell_y = max(0, min(cell_y, simulation_grid.height - 1))
+
         simulation_grid.reveal_particle_at(cell_x, cell_y, spawn_mat_name)
 
 def run():
@@ -65,7 +69,7 @@ def run():
         simulation_grid.update_particle_simulation()
         
         pygame.display.update()
-        
+
         clock.tick(FPS) / 1000
 
 if __name__ == '__main__':

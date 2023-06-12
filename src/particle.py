@@ -3,20 +3,6 @@ import json
 import pygame
 from constants import *
 
-def get_material_data(src_path, mat_name):
-    ''' str, str -> {}
-    Loads the material called mat_name from the file and
-    return the data as a dictionary.
-    '''
-    with open(src_path, 'r') as file:
-        data = json.load(file)
-
-    for material in data:
-        if material['name'] == mat_name:
-            return material
-
-    return {}
-
 '''
     The particle class is a class that group the data related the
     the particles used during the simulation.
@@ -49,12 +35,16 @@ class particle:
         ''' None -> None
         Loads or updates the material of the particle.
         '''
-        mat_data = get_material_data(MATERIAL_FILE, self.material_name)
+        with open(MATERIAL_FILE, 'r') as file:
+            data = json.load(file)
 
-        self.material_type = mat_data['type']
-        self.life_time = mat_data['initial_life_time']
-        self.color = ast.literal_eval(mat_data['initial_color'])
-        self.spread_rules = mat_data['spread_rules']
+        for material in data:
+            if material['name'] == self.material_name:
+                self.material_type = material['type']
+                self.life_time = material['initial_life_time']
+                self.color = ast.literal_eval(material['initial_color'])
+                self.spread_rules = material['spread_rules']
+                break
 
     def draw(self, window, rect):
         ''' pygame.Surface, pygame.Rect -> None

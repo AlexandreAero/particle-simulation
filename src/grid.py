@@ -86,7 +86,7 @@ class grid:
         b_l_particle = self.get_particle_at(x - 1, y + 1) # Below left
         b_r_particle = self.get_particle_at(x + 1, y + 1) # Below right
 
-        if b_particle and (self.particle_is_empty(b_particle) or b_particle.material_name in sand_particle.spread_rules['can_replace']):    
+        if b_particle and self.particle_is_empty(b_particle):    
             self.swap_particles(b_particle, sand_particle)
         elif b_l_particle and self.particle_is_empty(b_l_particle):
             self.swap_particles(b_l_particle, sand_particle)
@@ -134,7 +134,7 @@ class grid:
         b_l_particle = self.get_particle_at(x - 1, y + 1)
         b_r_particle = self.get_particle_at(x + 1, y + 1)
 
-        if b_particle and (self.particle_is_empty(b_particle) or b_particle.material_name in lava_particle.spread_rules):
+        if b_particle and self.particle_is_empty(b_particle):
             self.swap_particles(b_particle, lava_particle)
         elif b_l_particle and self.particle_is_empty(b_l_particle):
             self.swap_particles(b_l_particle, lava_particle)
