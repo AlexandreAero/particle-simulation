@@ -10,10 +10,9 @@ todo:
 - add velocity, density
 - sounds?
 - simulate lava
-- fix boundaries
 
 ## Screenshot
 ![image](https://github.com/AlexandreAero/particle-simulation/assets/66020831/ab642da7-8c2f-4fe7-bea9-093778b13235)
 
-## Used librairies
+## Used libraries
 - ``pygame``: [Website](https://www.pygame.org/news) or [Github repository](https://github.com/pygame/pygame)
