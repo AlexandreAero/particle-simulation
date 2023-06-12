@@ -4,6 +4,9 @@ from constants import *
 
 class grid:
     def __init__(self, window, cell_size):
+        ''' pygame.Surface, int -> None
+        Create a simulation grid.
+        '''
         self.window = window
         self.cell_size = cell_size
         self.width = int(window.get_width() / self.cell_size)
@@ -129,7 +132,7 @@ class grid:
         
     def cell_to_rect(self, x, y):
         ''' int, int -> pygame.Rect
-        Returns a rect based on x and y.
+        Returns a rect based on the cell located at x and y on the grid.
         '''
         return pygame.Rect(x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size)
 
