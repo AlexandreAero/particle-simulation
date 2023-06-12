@@ -6,6 +6,12 @@
 
 ### A python project that simulates the motion of different materials such as sand, water and lava using pygame.
 
+todo:
+- add velocity, density
+- sounds?
+- simulate lava
+- fix boundaries
+
 ## Screenshot
 ![image](https://github.com/AlexandreAero/particle-simulation/assets/66020831/ab642da7-8c2f-4fe7-bea9-093778b13235)
 
