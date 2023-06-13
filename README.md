@@ -16,3 +16,4 @@ todo:
 
 ## Used libraries
 - ``pygame``: [Website](https://www.pygame.org/news) or [Github repository](https://github.com/pygame/pygame)
+- ``pygame_gui``: [Github repository](https://github.com/MyreMylar/pygame_gui)
