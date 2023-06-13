@@ -24,7 +24,7 @@ class grid:
         None -> None 
         Populates the cells in the grid with new empty particles.
         '''
-        self.cells = [particle(MATERIAL_NONE) for _ in range(self.width * self.height)]
+        self.cells = [particle(MATERIAL_NAME_NONE) for _ in range(self.width * self.height)]
 
     def get_cell_index(self, x, y):
         '''
@@ -59,7 +59,7 @@ class grid:
         empty or not.
         '''
         index = self.get_cell_index(x, y)
-        return self.cells[index].material_name == MATERIAL_NONE
+        return self.cells[index].material_name == MATERIAL_NAME_NONE
     
     def particle_is_empty(self, particle):
         '''
@@ -67,7 +67,7 @@ class grid:
         Returns wether the cell located at x and y on the grid is
         empty or not.
         '''
-        return particle.material_name == MATERIAL_NONE
+        return particle.material_name == MATERIAL_NAME_NONE
 
     def swap_particles(self, p1, p2):
         '''
@@ -94,12 +94,16 @@ class grid:
         b_l_particle = self.get_particle_at(x - 1, y + 1) # Below left
         b_r_particle = self.get_particle_at(x + 1, y + 1) # Below right
 
-        if b_particle and (self.particle_is_empty(b_particle) or b_particle.material_name == MATERIAL_WATER): # Move down
+        if b_particle and (self.particle_is_empty(b_particle) or solid_particle.can_spread_to(b_particle.material_name)): # Move down
+            solid_particle.color = solid_particle.get_contact_color(b_particle.material_name)
             self.swap_particles(b_particle, solid_particle)
+
         elif b_l_particle and self.particle_is_empty(b_l_particle): # Move down and left
             self.swap_particles(b_l_particle, solid_particle)
+
         elif b_r_particle and self.particle_is_empty(b_r_particle): # Move down and right
             self.swap_particles(b_r_particle, solid_particle)
+
         else:
             pass
 
@@ -121,16 +125,22 @@ class grid:
         b_l_particle = self.get_particle_at(x - 1, y + 1) # Below left
         b_r_particle = self.get_particle_at(x + 1, y + 1) # Below right
 
-        if b_particle and self.particle_is_empty(b_particle): # Move down
+        if b_particle and (self.particle_is_empty(b_particle) or liquid_particle.can_spread_to(b_particle.material_name)): # Move down
+            liquid_particle.color = liquid_particle.get_contact_color(b_particle.material_name)
             self.swap_particles(b_particle, liquid_particle)
+
         elif b_l_particle and self.particle_is_empty(b_l_particle): # Move down and left
             self.swap_particles(b_l_particle, liquid_particle)
+
         elif b_r_particle and self.particle_is_empty(b_r_particle): # Move down and right
             self.swap_particles(b_r_particle, liquid_particle)
+
         elif l_particle and self.particle_is_empty(l_particle): # Move left
             self.swap_particles(l_particle, liquid_particle)
+
         elif r_particle and self.particle_is_empty(r_particle): # Move right
             self.swap_particles(r_particle, liquid_particle)
+
         else:
             pass
 

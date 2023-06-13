@@ -32,7 +32,8 @@ class particle:
         self.load_material()
 
     def load_material(self):
-        ''' None -> None
+        '''
+        None -> None
         Loads or updates the material of the particle.
         '''
         with open(MATERIAL_FILE, 'r') as file:
@@ -46,8 +47,25 @@ class particle:
                 self.spread_rules = material['spread_rules']
                 break
 
+    def can_spread_to(self, material_name):
+        '''
+        str -> bool
+        Returns true if the particle (self) is allowed to spread and replace
+        the material named material_name.
+        '''
+        return material_name in self.spread_rules['can_replace']
+
+    def get_contact_color(self, material_name):
+        '''
+        str -> tuple
+        Returns a new rgb color as a tuple that the particle (self) should
+        take when in contact with the material named material_name.
+        '''
+        return ast.literal_eval(self.spread_rules['contact_colors'][material_name])
+    
     def draw(self, window, rect):
-        ''' pygame.Surface, pygame.Rect -> None
+        '''
+        pygame.Surface, pygame.Rect -> None
         Blits the particule to the window.
         '''
         pygame.draw.rect(window, self.color, rect)
