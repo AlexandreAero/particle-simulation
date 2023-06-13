@@ -4,7 +4,8 @@ from constants import *
 
 class grid:
     def __init__(self, window, cell_size):
-        ''' pygame.Surface, int -> None
+        '''
+        pygame.Surface, int -> None
         Create a simulation grid.
         '''
         self.window = window
@@ -19,19 +20,22 @@ class grid:
         self.create_grid()
 
     def create_grid(self):
-        ''' None -> None 
+        '''
+        None -> None 
         Populates the cells in the grid with new empty particles.
         '''
         self.cells = [particle(MATERIAL_NONE) for _ in range(self.width * self.height)]
 
     def get_cell_index(self, x, y):
-        ''' int, int -> int
+        '''
+        int, int -> int
         Returns the index in the list of the cell located at x and y.
         '''
         return y * self.width + x
 
     def update_particle_simulation(self):
-        ''' None -> None
+        '''
+        None -> None
         Updates the particles motion.
         '''
         for y in range(self.height - 1, 0, -1):
@@ -49,7 +53,8 @@ class grid:
                 current_particle.draw(self.window, rect)
 
     def cell_is_empty(self, x, y):
-        ''' int, int -> bool
+        '''
+        int, int -> bool
         Returns wether the cell located at x and y on the grid is
         empty or not.
         '''
@@ -57,20 +62,26 @@ class grid:
         return self.cells[index].material_name == MATERIAL_NONE
     
     def particle_is_empty(self, particle):
-        ''' particle -> bool
+        '''
+        particle -> bool
         Returns wether the cell located at x and y on the grid is
         empty or not.
         '''
         return particle.material_name == MATERIAL_NONE
 
     def swap_particles(self, p1, p2):
-        ''' particle, particle -> None
+        '''
+        particle, particle -> None
         p1 becomes p2 and p2 becomes p1.
         '''
-        p1.material_name, p1.material_type, p1.color, p2.material_name, p2.color = p2.material_name, p2.material_type, p2.color, p1.material_name, p1.color
+        p1.material_name, p1.material_type, p1.color, p1.spread_rules,  \
+        p2.material_name, p2.material_type, p2.color, p2.spread_rules = \
+        p2.material_name, p2.material_type, p2.color, p2.spread_rules,  \
+        p1.material_name, p1.material_type, p1.color, p1.spread_rules   \
 
     def update_solid(self, x, y):
-        ''' int, int -> None
+        '''
+        int, int -> None
         Updates the solid particle located at x and y on the grid.
         A solid particle isn't simulated in the same way as a liquid particle.
         The 'physics' is different, a solid particle can stack up while a
@@ -93,7 +104,8 @@ class grid:
             pass
 
     def update_liquid(self, x, y):
-        ''' int, int -> None
+        '''
+        int, int -> None
         Updates the liquid particle located at x and y on the grid.
         A liquid particle isn't simulated in the same way as a solid particle.
         The 'physics' is different, a liquid particle can spread around while
@@ -123,7 +135,8 @@ class grid:
             pass
 
     def get_particle_at(self, x, y):
-        ''' int, int -> particle
+        '''
+        int, int -> particle
         Returns the particle located at x and y in the grid.
         '''
         index = self.get_cell_index(x, y)
@@ -132,13 +145,15 @@ class grid:
         return None
         
     def cell_to_rect(self, x, y):
-        ''' int, int -> pygame.Rect
+        '''
+        int, int -> pygame.Rect
         Returns a rect based on the cell located at x and y on the grid.
         '''
         return pygame.Rect(x * self.cell_size, y * self.cell_size, self.cell_size, self.cell_size)
 
     def reveal_particle_at(self, x, y, material_name):
-        ''' int, int, str -> None
+        '''
+        int, int, str -> None
         Lights up a particle from the grid located at x and y.
         '''
         spawn_particle = self.get_particle_at(x, y)
