@@ -29,12 +29,10 @@ class particle:
         self.color = (0, 0, 0)
         self.spread_rules = {}
 
-        self.load_material()
-
     def load_material(self):
         '''
         None -> None
-        Loads or updates the material of the particle.
+        Loads or updates the material of the particle from the json file.
         '''
         with open(MATERIAL_FILE, 'r') as file:
             data = json.load(file)
