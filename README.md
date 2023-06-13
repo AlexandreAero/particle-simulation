@@ -8,9 +8,10 @@
 
 todo:
 - add velocity, density
-- add more fire
+- add fire, oil
 - add sounds?
-- optimisation
+- optimization
+- over ui block
 
 ## Screenshot
 ![image](https://github.com/AlexandreAero/particle-simulation/assets/66020831/ab642da7-8c2f-4fe7-bea9-093778b13235)
