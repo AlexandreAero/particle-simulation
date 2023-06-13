@@ -1,4 +1,6 @@
+import math
 import pygame
+import random
 from particle import *
 from constants import *
 
@@ -45,6 +47,8 @@ class grid:
                     self.update_solid(x, y)
                 elif mat_type == MATERIAL_TYPE_LIQUID:
                     self.update_liquid(x, y)
+                elif mat_type == MATERIAL_TYPE_GAS:
+                    self.update_gas(x, y)
 
         for column_index in range(self.height):
             for row_index in range(self.width):
@@ -83,9 +87,6 @@ class grid:
         '''
         int, int -> None
         Updates the solid particle located at x and y on the grid.
-        A solid particle isn't simulated in the same way as a liquid particle.
-        The 'physics' is different, a solid particle can stack up while a
-        liquid particle will spread around.
         '''
         solid_particle = self.get_particle_at(x, y)
 
@@ -111,9 +112,6 @@ class grid:
         '''
         int, int -> None
         Updates the liquid particle located at x and y on the grid.
-        A liquid particle isn't simulated in the same way as a solid particle.
-        The 'physics' is different, a liquid particle can spread around while
-        a solid particle will stack up.
         '''
         liquid_particle = self.get_particle_at(x, y)
 
@@ -144,6 +142,29 @@ class grid:
         else:
             pass
 
+    def update_gas(self, x, y):
+        '''
+        int, int -> None
+        Updates the gas particle located at x and y on the grid.
+        '''
+        gas_particle = self.get_particle_at(x, y)
+
+        # Get neighboring particles
+        a_particle = self.get_particle_at(x, y - 1) # Above
+        l_particle = self.get_particle_at(x - 1, y) # Left
+        r_particle = self.get_particle_at(x + 1, y) # Right
+        b_particle = self.get_particle_at(x, y + 1) # Below
+
+        # Randomly select a direction to move
+        directions = [a_particle, l_particle, r_particle, b_particle]
+        random.shuffle(directions)
+
+        for direction in directions:
+            if direction and (self.particle_is_empty(direction) or gas_particle.can_spread_to(direction.material_name)):
+                gas_particle.color = gas_particle.get_contact_color(direction.material_name)
+                self.swap_particles(direction, gas_particle)
+                break
+
     def get_particle_at(self, x, y):
         '''
         int, int -> particle
@@ -171,3 +192,31 @@ class grid:
         # Refresh material
         spawn_particle.material_name = material_name
         spawn_particle.load_material()
+
+    def reveal_particles_at(self, bounds, material_name):
+        '''
+        [int], str -> None
+        Lights up particles from the grid located in the bounds.
+        '''
+        x_start, y_start, x_end, y_end = bounds
+
+        total_particles = (x_end - x_start + 1) * (y_end - y_start + 1)
+
+        # Percentage of particles to reveal in each iteration
+        reveal_percentage = 0.2
+        particles_to_reveal = int(total_particles * reveal_percentage)
+
+        center_x = (x_start + x_end) // 2
+        center_y = (y_start + y_end) // 2
+
+        for _ in range(particles_to_reveal):
+            angle = random.uniform(0, 2 * math.pi)
+            radius = random.uniform(0, min(center_x - x_start, center_y - y_start))
+            x = int(center_x + radius * math.cos(angle))
+            y = int(center_y + radius * math.sin(angle))
+            
+            # Ensure the generated coordinates are within the bounds
+            x = max(x_start, min(x, x_end))
+            y = max(y_start, min(y, y_end))
+            
+            self.reveal_particle_at(x, y, material_name)
