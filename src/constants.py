@@ -1,6 +1,6 @@
 FPS            = 60
 CELL_SIZE      = 5
-SCREEN_SIZE    = (600, 600)
+SCREEN_SIZE    = (800, 800)
 CLEAR_COLOR    = (0, 0, 0)
 MATERIAL_FILE  = './materials.json'
 
