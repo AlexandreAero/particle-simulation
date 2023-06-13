@@ -8,8 +8,9 @@
 
 todo:
 - add velocity, density
-- add more materials (fire, gaz...)
+- add more fire
 - add sounds?
+- optimisation
 
 ## Screenshot
 ![image](https://github.com/AlexandreAero/particle-simulation/assets/66020831/ab642da7-8c2f-4fe7-bea9-093778b13235)
