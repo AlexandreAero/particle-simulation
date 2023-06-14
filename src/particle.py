@@ -64,6 +64,6 @@ class particle:
     def draw(self, window, rect):
         '''
         pygame.Surface, pygame.Rect -> None
-        Blits the particule to the window.
+        Blits the particle to the window.
         '''
         pygame.draw.rect(window, self.color, rect)
