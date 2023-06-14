@@ -95,16 +95,13 @@ class grid:
         b_l_particle = self.get_particle_at(x - 1, y + 1) # Below left
         b_r_particle = self.get_particle_at(x + 1, y + 1) # Below right
 
-        if b_particle and (self.particle_is_empty(b_particle) or solid_particle.can_spread_to(b_particle.material_name)): # Move down
+        if b_particle and (b_particle.is_empty() or solid_particle.can_spread_to(b_particle.material_name)): # Move down
             solid_particle.color = solid_particle.get_contact_color(b_particle.material_name)
             self.swap_particles(b_particle, solid_particle)
-
-        elif b_l_particle and self.particle_is_empty(b_l_particle): # Move down and left
+        elif b_l_particle and b_l_particle.is_empty(): # Move down and left
             self.swap_particles(b_l_particle, solid_particle)
-
-        elif b_r_particle and self.particle_is_empty(b_r_particle): # Move down and right
+        elif b_r_particle and b_r_particle.is_empty(): # Move down and right
             self.swap_particles(b_r_particle, solid_particle)
-
         else:
             pass
 
@@ -123,22 +120,17 @@ class grid:
         b_l_particle = self.get_particle_at(x - 1, y + 1) # Below left
         b_r_particle = self.get_particle_at(x + 1, y + 1) # Below right
 
-        if b_particle and (self.particle_is_empty(b_particle) or liquid_particle.can_spread_to(b_particle.material_name)): # Move down
+        if b_particle and (b_particle.is_empty() or liquid_particle.can_spread_to(b_particle.material_name)): # Move down
             liquid_particle.color = liquid_particle.get_contact_color(b_particle.material_name)
             self.swap_particles(b_particle, liquid_particle)
-
-        elif b_l_particle and self.particle_is_empty(b_l_particle): # Move down and left
+        elif b_l_particle and b_l_particle.is_empty(): # Move down and left
             self.swap_particles(b_l_particle, liquid_particle)
-
-        elif b_r_particle and self.particle_is_empty(b_r_particle): # Move down and right
+        elif b_r_particle and b_r_particle.is_empty(): # Move down and right
             self.swap_particles(b_r_particle, liquid_particle)
-
-        elif l_particle and self.particle_is_empty(l_particle): # Move left
+        elif l_particle and l_particle.is_empty(): # Move left
             self.swap_particles(l_particle, liquid_particle)
-
-        elif r_particle and self.particle_is_empty(r_particle): # Move right
+        elif r_particle and r_particle.is_empty(): # Move right
             self.swap_particles(r_particle, liquid_particle)
-
         else:
             pass
 
@@ -160,7 +152,7 @@ class grid:
         random.shuffle(directions)
 
         for direction in directions:
-            if direction and (self.particle_is_empty(direction) or gas_particle.can_spread_to(direction.material_name)):
+            if direction and (direction.is_empty() or gas_particle.can_spread_to(direction.material_name)):
                 gas_particle.color = gas_particle.get_contact_color(direction.material_name)
                 self.swap_particles(direction, gas_particle)
                 break

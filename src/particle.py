@@ -45,6 +45,14 @@ class particle:
                 self.spread_rules = material['spread_rules']
                 break
 
+    def is_empty(self):
+        '''
+        None -> None
+        Returns true if the particle is empty, meaning it's not displaying a
+        specific material.
+        '''
+        return self.material_name == MATERIAL_NAME_NONE
+
     def can_spread_to(self, material_name):
         '''
         str -> bool
