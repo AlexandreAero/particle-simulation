@@ -13,7 +13,7 @@ gui = pygame_gui.UIManager(SCREEN_SIZE)
 selected_material = MATERIAL_NAME_NONE
 selected_brush = BRUSH_SMALL
 
-shouldQuit = False
+should_quit = False
 mouse_down = False
 
 simulation_grid = grid(window, CELL_SIZE)
@@ -95,7 +95,7 @@ def run():
     '''
     delta_time = 0
 
-    while not shouldQuit:
+    while not should_quit:
         for event in pygame.event.get():
             gui.process_events(event)
             update_inputs(event)
