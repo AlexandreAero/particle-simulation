@@ -3,6 +3,8 @@ import json
 import pygame
 from constants import *
 
+data = None
+
 '''
     The particle class is a class that group the data related the
     the particles used during the simulation.
@@ -29,13 +31,16 @@ class particle:
         self.color = (0, 0, 0)
         self.spread_rules = {}
 
-    def load_material(self):
+    def load_material(self, json_path):
         '''
-        None -> None
+        str -> None
         Loads or updates the material of the particle from the json file.
         '''
-        with open(MATERIAL_FILE, 'r') as file:
-            data = json.load(file)
+        global data
+
+        if data is None:
+            with open(json_path, 'r') as file:
+                data = json.load(file)
 
         for material in data:
             if material['name'] == self.material_name:

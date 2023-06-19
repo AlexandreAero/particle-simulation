@@ -183,7 +183,7 @@ class grid:
 
         # Refresh material
         spawn_particle.material_name = material_name
-        spawn_particle.load_material()
+        spawn_particle.load_material(MATERIAL_FILE)
 
     def reveal_particles_at(self, bounds, material_name):
         '''

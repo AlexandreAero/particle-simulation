@@ -1,8 +1,8 @@
-FPS            = 60
-CELL_SIZE      = 5
-SCREEN_SIZE    = (800, 800)
-CLEAR_COLOR    = (0, 0, 0)
-MATERIAL_FILE  = './src/materials.json'
+FPS           = 60
+CELL_SIZE     = 5
+SCREEN_SIZE   = (800, 800)
+CLEAR_COLOR   = (0, 0, 0)
+MATERIAL_FILE = './src/materials.json'
 
 BRUSH_SMALL = 'brush_small'
 BRUSH_BIG   = 'brush_big'
